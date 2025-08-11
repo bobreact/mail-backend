@@ -10,10 +10,10 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.mail</groupId>
-	<artifactId>mail</artifactId>
+	<artifactId>smg</artifactId>
 
 	<packaging>war</packaging>
-	<name>mail</name>
+	<name>smg</name>
 	<description>sample project for Spring Boot</description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -93,7 +93,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>mail</finalName>
+		<finalName>smg</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
