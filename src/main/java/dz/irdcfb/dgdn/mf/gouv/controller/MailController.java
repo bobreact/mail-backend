@@ -1,4 +1,4 @@
-package dz.irdcfb.dgdn.mf.gouv.web;
+package dz.irdcfb.dgdn.mf.gouv.controller;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -22,17 +22,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
-import dz.irdcfb.dgdn.mf.gouv.dao.MailArriveRepository;
 import dz.irdcfb.dgdn.mf.gouv.dto.MailResponseDTO;
 import dz.irdcfb.dgdn.mf.gouv.entities.MailArrive;
+import dz.irdcfb.dgdn.mf.gouv.repository.MailArriveRepository;
 import dz.irdcfb.dgdn.mf.gouv.security.payload.response.MessageResponse;
 import dz.irdcfb.dgdn.mf.gouv.service.MailArriveService;
-
 
 @CrossOrigin("*")
 @Controller
@@ -54,14 +54,19 @@ public class MailController {
 
 	String pattern = "yyyy-MM-dd";
 	SimpleDateFormat sdf = new SimpleDateFormat(pattern);
-	
-	
-	
+
+	/*
+	 * @GetMapping // @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+	 * 
+	 * @PreAuthorize("hasRole('USER')") public List<MailArrive> getAllMails() {
+	 * return mailArriveService.getAllMail(); }
+	 */
+
 	@GetMapping
-	// @PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@PreAuthorize("hasRole('USER')")
-	public List<MailArrive> getAllMails() {
-		return mailArriveService.getAllMail();
+	public ResponseEntity<List<MailArrive>> searchProducts(@RequestParam Integer structure) {
+		List<MailArrive> mails = mailArriveRepository.findByStructure(structure);
+		return ResponseEntity.ok(mails);
 	}
 
 	@PostMapping(value = "/upload", consumes = { MediaType.ALL_VALUE })
@@ -78,10 +83,11 @@ public class MailController {
 		 */
 		Date dateArrivee = mail.getDateArrivee();
 		sdf.format(dateArrivee);
-		//LocalDate localDateArrivee = dateArrivee.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();		
-       // final int yearArrivee = localDateArrivee.getYear();
-		if (mailArriveRepository.existsByNumArriveAndAnnee(mail.getNumArrive(),
-		dateArrivee.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getYear())) {
+		// LocalDate localDateArrivee =
+		// dateArrivee.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		// final int yearArrivee = localDateArrivee.getYear();
+		if (mailArriveRepository.existsByNumArriveAndAnneeAndStructure(mail.getNumArrive(),
+				dateArrivee.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getYear(), mail.getStructure())) {
 			return ResponseEntity.badRequest().body(new MessageResponse("Error: Mail already exists!"));
 		}
 
