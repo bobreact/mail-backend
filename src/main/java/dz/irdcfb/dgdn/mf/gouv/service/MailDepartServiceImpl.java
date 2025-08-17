@@ -86,7 +86,7 @@ public class MailDepartServiceImpl implements MailDepartService {
 			final int year = localDate.getYear();
 			final int month = localDate.getMonthValue();
 			final int day = localDate.getDayOfMonth();
-			String numero = "d" + "." + mail.getNumDepart() + "-" + day + "." + month + "." + year;// + "-" +
+			String numero = "D" + "." + mail.getNumDepart() + "-" + day + "." + month + "." + year;// + "-" +
 																									// nextNumero;
 			String uploadDir = fileBasePath + numero + ".zip";
 			File fileDir = new File(uploadDir);

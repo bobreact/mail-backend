@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -56,8 +57,9 @@ public class MailDepartController {
 
 	@GetMapping
 	@PreAuthorize("hasRole('USER')")
-	public List<MailDepart> getAllMails() {
-		return mailDepartService.getAllMail();
+	public ResponseEntity<List<MailDepart>> searchMail(@RequestParam Integer structure) {
+		List<MailDepart> mails = mailDepartRepository.findByStructure(structure);
+		return ResponseEntity.ok(mails);
 	}
 
 	@PostMapping(value = "/upload", consumes = { MediaType.ALL_VALUE })

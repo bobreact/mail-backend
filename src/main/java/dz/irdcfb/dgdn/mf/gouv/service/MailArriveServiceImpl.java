@@ -83,7 +83,8 @@ public class MailArriveServiceImpl implements MailArriveService {
 			final int year = localDate.getYear();
 			final int month = localDate.getMonthValue();
 			final int day = localDate.getDayOfMonth();
-			String numero = mail.getNumDepartExp() + "-" + day + "." + month + "." + year;// + "-" + nextNumero;
+			String numero = "A" + "." + mail.getNumDepartExp() + "-" + day + "." + month + "." + year;// + "-" +
+																										// nextNumero;
 			String uploadDir = fileBasePath + numero + ".zip";
 			File fileDir = new File(uploadDir);
 			File fileTemp = new File(tempDir + name + ".zip");
